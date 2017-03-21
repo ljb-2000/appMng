@@ -79,3 +79,32 @@
   "msg": "OK"
 }
 ```
+
+#### 4. 生成镜像
+##### URI: /appMng/v1/images  
+##### METHOD: POST
+##### BODY:    
+
+##### 返回BODY：  
+
+
+#### 5. 查询镜像
+##### URI: /appMng/v1/images  
+##### METHOD: GET
+##### BODY:    
+
+##### 返回BODY：
+
+#### 6. 删除镜像
+##### URI: /appMng/v1/images/:imageId  
+##### METHOD: DELETE
+##### BODY:    
+
+##### 返回BODY：
+
+#### 7. 根据镜像部署服务
+##### URI: /appMng/v1/services  
+##### METHOD: POST
+##### BODY:    
+
+##### 返回BODY：
