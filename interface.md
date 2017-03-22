@@ -116,6 +116,12 @@
 ##### BODY:    
 
 ##### 返回BODY：
+``` json
+{
+  "code": "0",
+  "msg": "OK"
+}
+```
 
 #### 7. 根据镜像部署服务
 ##### URI: /appMng/v1/services  
