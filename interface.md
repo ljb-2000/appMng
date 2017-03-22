@@ -97,9 +97,9 @@
 ##### 返回BODY：  
 ``` json
 {
-	 "code": "0",
-     "msg": "OK",
-     "img": "223.202.32.59:8080/gk-test/testabc:1.0"
+    "code": "0",
+    "msg": "OK",
+    "img": "223.202.32.59:8080/gk-test/testabc:1.0"
 }
 ```
 
