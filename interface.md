@@ -83,10 +83,25 @@
 #### 4. 生成镜像
 ##### URI: /appMng/v1/images  
 ##### METHOD: POST
-##### BODY:    
+##### BODY:   
+``` json
+{
+	"name": "testabc",
+	"tag": "1.0",
+	"appId": "app123456",
+	"lang": "go",
+	"git": "http://223.202.32.60:8071/gk-test/testapp6.git"
+}
+```
 
 ##### 返回BODY：  
-
+``` json
+{
+	 "code": "0",
+     "msg": "OK",
+     "img": "223.202.32.59:8080/gk-test/testabc:1.0"
+}
+```
 
 #### 5. 查询镜像
 ##### URI: /appMng/v1/images  
