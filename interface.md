@@ -8,7 +8,8 @@
 	"name": "testapp6",
 	"description": "test",
 	"lang": "go",
-	"type": "app"
+	"type": "app",
+	"services": ""
 }
 ```
 
@@ -67,7 +68,33 @@
 ]
 ```
 
-#### 3. 删除应用
+
+#### 3. 查询某个应用
+##### URI: /appMng/v1/apps/:appId  
+##### METHOD: GET
+##### BODY:  空  
+
+##### 返回BODY：  
+``` json
+{
+  "code": "0",
+  "data": {
+    "id": "9d4cd8d2-2353-4fb2-908a-5e4567bf581d",
+    "name": "testapp6",
+    "user": "18022222222",
+    "description": "test",
+    "createdTime": "2017-03-21 10:31:30",
+    "lang": "go",
+    "type": "app",
+    "services": "",
+    "git": "http://223.202.32.60:8071/gk-test/testapp6.git",
+    "state": "created"
+  },
+  "msg": "OK"
+}
+```
+
+#### 4. 删除应用
 ##### URI: /appMng/v1/apps/:appId  
 ##### METHOD: DELETE
 ##### BODY:  空  
@@ -80,7 +107,8 @@
 }
 ```
 
-#### 4. 生成镜像
+
+#### 5. 生成镜像
 ##### URI: /appMng/v1/images  
 ##### METHOD: POST
 ##### BODY:   
@@ -103,14 +131,14 @@
 }
 ```
 
-#### 5. 查询镜像
+#### 6. 查询镜像
 ##### URI: /appMng/v1/images  
 ##### METHOD: GET
 ##### BODY:    
 
 ##### 返回BODY：
 
-#### 6. 删除镜像
+#### 7. 删除镜像
 ##### URI: /appMng/v1/images/:imageId  
 ##### METHOD: DELETE
 ##### BODY:    
@@ -123,7 +151,7 @@
 }
 ```
 
-#### 7. 根据镜像部署服务
+#### 8. 根据镜像部署服务
 ##### URI: /appMng/v1/services  
 ##### METHOD: POST
 ##### BODY:    
