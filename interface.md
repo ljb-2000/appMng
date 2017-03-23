@@ -131,12 +131,30 @@
 }
 ```
 
-#### 6. 查询镜像
-##### URI: /appMng/v1/images  
+#### 6. 查询某个app下的所有镜像
+##### URI: /appMng/v1/apps/:appId/images  
 ##### METHOD: GET
 ##### BODY:    
 
 ##### 返回BODY：
+``` json
+[
+  {
+    "id": "9d4cd8d2-2353-4fb2-908a-5e4567b123",
+    "name": "testabc",
+    "tag": "1.0",
+    "lang": "go",
+    "img": "223.202.32.59:8080/apptest/testabc:1.0"
+  },
+  {
+    "id": "9d4cd8d2-2353-4fb2-908a432545436346g",
+    "name": "test2",
+    "tag": "1.0",
+    "lang": "go",
+    "img": "223.202.32.59:8080/apptest/test2:1.0"
+    }
+]
+```
 
 #### 7. 删除镜像
 ##### URI: /appMng/v1/images/:imageId  
