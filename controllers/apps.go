@@ -24,7 +24,6 @@ type AppController struct {
 // @Description get apps
 // @router / [get]
 func (this *AppController) GetApps() {
-	//userId := "18022222222"
 	userId := this.Ctx.Input.Header("UserName")
 	apps, err := models.GetApps(userId)
 	if err != nil {
@@ -32,7 +31,6 @@ func (this *AppController) GetApps() {
 		this.CustomAbort(http.StatusInternalServerError, "获取所有应用失败")
 	}
 
-	//get app status from k8s
 	k8s.GetAppsStatus(userId, apps)
 
 	this.Data["json"] = apps
@@ -47,13 +45,11 @@ func (this *AppController) CreateApp() {
 	json.Unmarshal(this.Ctx.Input.RequestBody, &ob)
 	log.Println(ob)
 
-	//userId := "18022222222"
 	userId := this.Ctx.Input.Header("UserName")
 	userName, pwd := ua.GetUserNamePwd(userId)
 	log.Println("username: " + userName)
 	log.Println("password: " + pwd)
 
-	//根据userId和app name判断是否重名
 	if models.IsNameUsed(userName, ob.Name) {
 		logs.Error("应用名称重复")
 		this.CustomAbort(http.StatusInternalServerError, "应用名称已占用")
@@ -70,7 +66,6 @@ func (this *AppController) CreateApp() {
 	t := time.Now()
 	ob.CreatedTime = t.Format("2006-01-02 15:04:05")
 
-	//save app into database
 	models.AddApp(&ob)
 
 	jsonObj := gabs.New()
@@ -105,8 +100,7 @@ func (this *AppController) DeleteApp() {
 	}
 
 	//delete from git
-	userId := "18022222222"
-	//userId := this.Ctx.Input.Header("UserName")
+	userId := this.Ctx.Input.Header("UserName")
 	userName, pwd := ua.GetUserNamePwd(userId)
 	git.DeleteRepo(userName, pwd, app.Name)
 	jsonObj := gabs.New()
