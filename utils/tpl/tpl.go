@@ -8,9 +8,7 @@ import (
 	"os/exec"
 	"appMng/models"
 	"github.com/astaxie/beego"
-
 	"github.com/kardianos/osext"
-
 	"github.com/astaxie/beego/logs"
 )
 
@@ -31,23 +29,22 @@ func init()  {
 
 func BuildImg(img models.Image, appName string) {
 
-	dir := GetExecutableDir()
-	beego.Debug(dir)
+	path := GetExecutableDir()
+	beego.Debug(path)
 
-	buildFile := dir + "/buildgo.sh"
+	buildFile := path + "/buildgo.sh"
 	if img.Lang == "Go" {
-		buildFile = dir + "/buildgo.sh"
+		buildFile = path + "/buildgo.sh"
 	} else if img.Lang == "Python" {
-		buildFile = dir + "/buildpython.sh"
+		buildFile = path + "/buildpython.sh"
 	} else if img.Lang == "Javascript" {
-		buildFile = dir + "/buildjs.sh"
+		buildFile = path + "/buildjs.sh"
 	}
 
 	buff, err := ioutil.ReadFile(buildFile)
 	if err != nil {
-		log.Println(err.Error())
+		logs.Error(err.Error())
 	}
-
 	buildString := string(buff)
 
 	b := Build{}
@@ -59,8 +56,7 @@ func BuildImg(img models.Image, appName string) {
 	b.Tag = img.Tag
 
 	t := template.Must(template.New("templates").Parse(buildString))
-
-	filename := dir + "/buildfiles/build" + img.User + img.Name + img.Tag + ".sh"
+	filename := path + "/buildfiles/build" + img.User + img.Name + img.Tag + ".sh"
 	f, err := os.Create(filename)
 
 	err = t.Execute(f, b)

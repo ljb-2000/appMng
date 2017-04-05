@@ -9,6 +9,7 @@ import (
 	"github.com/jmoiron/jsonq"
 	"os/exec"
 	"os"
+	"github.com/astaxie/beego/logs"
 )
 
 
@@ -32,7 +33,7 @@ func CreateRepo(user, pwd, appname, desc string) (giturl string) {
 	gogsapi := gGogsUrl + `api/v1/user/repos`
 	bytes, merr := json.Marshal(r)
 	if merr != nil {
-		log.Println("err")
+		logs.Error(merr.Error())
 	} else {
 		reqBody := strings.NewReader(string(bytes))
 		resBody, err := commons.MyTestHttpRequest("POST", gogsapi, reqBody, user, pwd)
@@ -54,7 +55,7 @@ func DeleteRepo(user, pwd, appname string) {
 	resBody, err := commons.MyTestHttpRequest("DELETE", delrepo, nil, user, pwd)
 	if err != nil {
 		log.Println("delete repos failed.")
-		log.Println(err.Error())
+		logs.Error(err.Error())
 	} else {
 		log.Println("delete repos succeed: " + string(resBody))
 	}
