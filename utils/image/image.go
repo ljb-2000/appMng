@@ -63,17 +63,6 @@ func BuildImage(user, name, tag, giturl, lang string) (imgAddr string) {
 	}
 	fmt.Println(curPwd)
 
-	repoDir := curPwd+`/`+name
-
-	//generate docker file by lang type
-	if lang == "go" {
-		//copy dockerfile template
-		dir.CopyDir(curPwd+`/template/go`, repoDir)
-		os.Chdir(repoDir)
-		//docker build image
-	}
-
-	//second build image
 	tags := "registry.time-track.cn:8443/" + user + "/" + name + ":" + tag
 	cli, err := client.NewEnvClient()
 	if err != nil {
