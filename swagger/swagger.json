@@ -1,0 +1,110 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "appMng/v1",
+    "paths": {
+        "/apps/": {
+            "get": {
+                "tags": [
+                    "apps"
+                ],
+                "description": "get apps",
+                "operationId": "AppController.Get Apps"
+            },
+            "post": {
+                "tags": [
+                    "apps"
+                ],
+                "description": "create a new app",
+                "operationId": "AppController.CreateApp"
+            }
+        },
+        "/apps/{appId}": {
+            "get": {
+                "tags": [
+                    "apps"
+                ],
+                "description": "get an app",
+                "operationId": "AppController.Get An App"
+            },
+            "put": {
+                "tags": [
+                    "apps"
+                ],
+                "description": "modify an app",
+                "operationId": "AppController.Modify An App"
+            },
+            "delete": {
+                "tags": [
+                    "apps"
+                ],
+                "description": "delete the app",
+                "operationId": "AppController.DeleteApp",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "appId",
+                        "description": "待删除的appId",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/images/": {
+            "get": {
+                "tags": [
+                    "images"
+                ],
+                "description": "get images",
+                "operationId": "ImageController.Get Images"
+            },
+            "post": {
+                "tags": [
+                    "images"
+                ],
+                "description": "create a new image",
+                "operationId": "ImageController.Create Image"
+            }
+        },
+        "/images/{imageId}": {
+            "delete": {
+                "tags": [
+                    "images"
+                ],
+                "description": "delete image",
+                "operationId": "ImageController.delete Image",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "imageId",
+                        "description": "待删除的imageId",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/test/": {
+            "get": {
+                "tags": [
+                    "test"
+                ],
+                "description": "测试router",
+                "operationId": "TestController.Get"
+            }
+        }
+    }
+}

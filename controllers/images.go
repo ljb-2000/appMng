@@ -76,6 +76,7 @@ func (this *ImageController) GetImages() {
 
 // @Title delete Image
 // @Description delete image
+// @Param imageId path string true "待删除的imageId"
 // @router /:imageId [delete]
 func (this *ImageController) DeleteImage() {
 	imageId := this.Ctx.Input.Param(":imageId")
