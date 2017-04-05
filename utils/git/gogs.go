@@ -61,7 +61,6 @@ func DeleteRepo(user, pwd, appname string) {
 }
 
 func CloneRepo(giturl string) {
-
 	os.Chdir("/user/")
 	cmd := "git"
 	args := []string{"clone", giturl}

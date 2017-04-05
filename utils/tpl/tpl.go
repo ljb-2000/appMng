@@ -11,6 +11,7 @@ import (
 
 	"github.com/kardianos/osext"
 
+	"github.com/astaxie/beego/logs"
 )
 
 type Build struct {
@@ -22,14 +23,11 @@ type Build struct {
 	Tag string
 }
 
-var gGitUrl string
 var gRegUrl string
 
 func init()  {
-	gGitUrl = beego.AppConfig.String("gogsurl")
 	gRegUrl = beego.AppConfig.String("regurl")
 }
-
 
 func BuildImg(img models.Image, appName string) {
 
@@ -62,28 +60,29 @@ func BuildImg(img models.Image, appName string) {
 
 	t := template.Must(template.New("templates").Parse(buildString))
 
-	filename := dir + "buildfiles/build" + img.User + img.Name + img.Tag + ".sh"
+	filename := dir + "/buildfiles/build" + img.User + img.Name + img.Tag + ".sh"
 	f, err := os.Create(filename)
 
 	err = t.Execute(f, b)
 	if err != nil {
-		log.Println("executing template:", err)
+		logs.Error("execute template error: %s", err.Error())
 	}
 
 	cmd := exec.Command("chmod", "755", filename)
 	out, err := cmd.Output()
 	if err != nil {
-		log.Println(string(out))
+		logs.Error(string(out))
 	}
 
 	var state string
 	cmd = exec.Command("/bin/sh", filename)
 	out, err = cmd.Output()
 	if err != nil {
-		log.Println(string(out))
-		state = "build error: " + string(out)
+		logs.Debug(string(out))
+		logs.Error("execute file: %s failed, error: %s, output: %s", filename, string(out), err.Error())
+		state = "Error"
 	} else {
-		state = "succeed"
+		state = "Succeed"
 	}
 
 	models.SetImageBuildStatus(img.Id, state)

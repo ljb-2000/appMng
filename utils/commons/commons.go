@@ -31,7 +31,7 @@ func MyTestHttpRequest(method, endpoint string, reqBody io.Reader, user, pwd str
 		log.Println(httpRes.Status)
 		body, _ = ioutil.ReadAll(httpRes.Body)
 	}
-	log.Println("------------recv response rancher ------------------")
+	log.Println("------------recv response ------------------")
 	return body, err
 }
 

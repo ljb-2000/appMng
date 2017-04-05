@@ -3,7 +3,7 @@ package tpl
 import "testing"
 import "appMng/models"
 
-func TestGenerateShellFile(t *testing.T) {
+func TestBuildImg(t *testing.T) {
 	img := models.Image{}
 	img.User = "luocheng"
 	img.Name = "testapp4"

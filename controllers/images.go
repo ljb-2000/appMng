@@ -36,18 +36,15 @@ func (this *ImageController) CreateImage() {
 
 	go tpl.BuildImg(ob, app.Name)
 
-	imgAddr := "registry.time-track.cn:8052/" + ob.User + "/" + ob.Name + ":" + ob.Tag
+	imgAddr := gRegUrl + "/" + ob.User + "/" + ob.Name + ":" + ob.Tag
 	ob.Img = imgAddr
-
 	t := time.Now()
 	ob.CreatedTime = t.Format("2006-01-02 15:04:05")
-
 	ob.State = "building"
-
 	log.Println(ob)
 	err := models.AddImage(&ob)
 	if err != nil {
-		log.Println(err.Error())
+		logs.Error(err.Error())
 	}
 
 	jsonObj := gabs.New()

@@ -14,6 +14,10 @@ func TestCreateRepo(t *testing.T) {
 	log.Println(giturl)
 }
 
-func TestCloneRepo() {
+func TestCloneRepo(t *testing.T) {
 	CloneRepo("")
+}
+
+func TestDeleteRepo(t *testing.T) {
+	DeleteRepo("luocheng", "123456", "app1")
 }

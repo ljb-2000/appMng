@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"appMng/models"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 )
 
 type AppResp struct {
@@ -36,15 +37,15 @@ func GetAppState(user string) {
 	return
 }
 
-func GetAppsStatus(user string, apps []models.App)  {
+func GetAppsStatus(user string, apps []models.App) error {
 	k8sUrl := gK8sUrl + `k8s-middleware/v1/app/?namespace=` + user
 
 	var defuser, defpwd string
 	resBody, err := commons.MyTestHttpRequest("GET", k8sUrl, nil, defuser, defpwd)
 	if err != nil {
-		log.Println(err.Error())
+		logs.Error("Get app status failed: %s", err.Error())
 	} else {
-		log.Println(string(resBody))
+		logs.Debug(string(resBody))
 		appStatus := []AppResp{}
 		json.Unmarshal(resBody, &appStatus)
 		log.Println(len(appStatus))
@@ -57,7 +58,7 @@ func GetAppsStatus(user string, apps []models.App)  {
 			}
 		}
 	}
-	return
+	return err
 }
 
 

@@ -16,7 +16,7 @@ type Image struct {
 }
 
 
-//查询镜像
+//query all images of an app
 func GetImages(appId string) ([]Image, error) {
 	o := db.GetOrmer()
 	var imgs []Image
@@ -24,7 +24,7 @@ func GetImages(appId string) ([]Image, error) {
 	return imgs, nil
 }
 
-//增加image
+//add an image
 func AddImage(img *Image) error {
 	o := db.GetOrmer()
 	_, err := o.Insert(img)
@@ -34,7 +34,7 @@ func AddImage(img *Image) error {
 	return nil
 }
 
-//删除image
+//delete an image
 func DeleteImage(imgId string) error {
 	o := db.GetOrmer()
 	_, err := o.Delete(&Image{Id:imgId})
@@ -44,7 +44,7 @@ func DeleteImage(imgId string) error {
 	return nil
 }
 
-//query a image
+//query an image
 func GetaImage(imgId string) (*Image, error) {
 	o := db.GetOrmer()
 	var img Image
@@ -56,7 +56,7 @@ func GetaImage(imgId string) (*Image, error) {
 }
 
 
-// 设置镜像状态
+// set image build error state
 func SetImageBuildStatus(imageId string, state string) (error) {
 	o := db.GetOrmer()
 	img := Image{Id:imageId}

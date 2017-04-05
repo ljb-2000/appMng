@@ -31,8 +31,11 @@ func (this *AppController) GetApps() {
 		this.CustomAbort(http.StatusInternalServerError, "获取所有应用失败")
 	}
 
-	k8s.GetAppsStatus(userId, apps)
-
+	err = k8s.GetAppsStatus(userId, apps)
+	if err != nil {
+		logs.Error("获取应用状态失败 %v", err)
+		this.CustomAbort(http.StatusInternalServerError, "获取应用状态失败")
+	}
 	this.Data["json"] = apps
 	this.ServeJSON()
 }
@@ -43,7 +46,6 @@ func (this *AppController) GetApps() {
 func (this *AppController) CreateApp() {
 	var ob models.App
 	json.Unmarshal(this.Ctx.Input.RequestBody, &ob)
-	log.Println(ob)
 
 	userId := this.Ctx.Input.Header("UserName")
 	userName, pwd := ua.GetUserNamePwd(userId)
@@ -55,13 +57,12 @@ func (this *AppController) CreateApp() {
 		this.CustomAbort(http.StatusInternalServerError, "应用名称已占用")
 	}
 
-	//create a repository for the app
 	giturl := git.CreateRepo(userName, pwd, ob.Name, ob.Description)
 	ob.Git = giturl
 
 	ob.Id = uuid.NewV4().String()
 	ob.User = userId
-	ob.State = "created"
+	ob.State = "Created"
 
 	t := time.Now()
 	ob.CreatedTime = t.Format("2006-01-02 15:04:05")
