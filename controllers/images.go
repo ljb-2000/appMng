@@ -34,7 +34,7 @@ func (this *ImageController) CreateImage() {
 		this.CustomAbort(http.StatusInternalServerError, "获取应用失败")
 	}
 
-	go tpl.GenerateShellFile(ob, app.Name)
+	go tpl.BuildImg(ob, app.Name)
 
 	imgAddr := "registry.time-track.cn:8052/" + ob.User + "/" + ob.Name + ":" + ob.Tag
 	ob.Img = imgAddr
