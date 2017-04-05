@@ -5,6 +5,7 @@ import (
 	"appMng/utils/commons"
 	"encoding/json"
 	"appMng/models"
+	"github.com/astaxie/beego"
 )
 
 type AppResp struct {
@@ -12,8 +13,14 @@ type AppResp struct {
 	Status string `json:"status"`
 }
 
+var gK8sUrl string
+
+func init()  {
+	gK8sUrl = beego.AppConfig.String("k8surl")
+}
+
 func GetAppState(user string) {
-	k8sUrl := `http://172.16.5.245:8080/v1/app/?namespace=` + user
+	k8sUrl := gK8sUrl + `k8s-middleware/v1/app/?namespace=` + user
 
 	var defuser, defpwd string
 	resBody, err := commons.MyTestHttpRequest("GET", k8sUrl, nil, defuser, defpwd)
@@ -30,7 +37,7 @@ func GetAppState(user string) {
 }
 
 func GetAppsStatus(user string, apps []models.App)  {
-	k8sUrl := `http://172.16.5.245:8080/v1/app/?namespace=` + user
+	k8sUrl := gK8sUrl + `k8s-middleware/v1/app/?namespace=` + user
 
 	var defuser, defpwd string
 	resBody, err := commons.MyTestHttpRequest("GET", k8sUrl, nil, defuser, defpwd)
@@ -47,6 +54,29 @@ func GetAppsStatus(user string, apps []models.App)  {
 				if apps[i].Name == appStatus[j].Name {
 					apps[i].State = appStatus[j].Status
 				}
+			}
+		}
+	}
+	return
+}
+
+
+func GetAnAppStatus(user string, app *models.App)  {
+	k8sUrl := gK8sUrl + `k8s-middleware/v1/app/?namespace=` + user
+
+	var defuser, defpwd string
+	resBody, err := commons.MyTestHttpRequest("GET", k8sUrl, nil, defuser, defpwd)
+	if err != nil {
+		log.Println(err.Error())
+	} else {
+		log.Println(string(resBody))
+		appStatus := []AppResp{}
+		json.Unmarshal(resBody, &appStatus)
+		log.Println(len(appStatus))
+
+		for j := 0; j < len(appStatus); j++ {
+			if app.Name == appStatus[j].Name {
+				app.State = appStatus[j].Status
 			}
 		}
 	}

@@ -144,14 +144,16 @@
     "name": "testabc",
     "tag": "1.0",
     "lang": "go",
-    "img": "223.202.32.59:8080/apptest/testabc:1.0"
+    "img": "223.202.32.59:8080/apptest/testabc:1.0",
+    "state": ""
   },
   {
     "id": "9d4cd8d2-2353-4fb2-908a432545436346g",
     "name": "test2",
     "tag": "1.0",
     "lang": "go",
-    "img": "223.202.32.59:8080/apptest/test2:1.0"
+    "img": "223.202.32.59:8080/apptest/test2:1.0",
+    "state": ""
     }
 ]
 ```
