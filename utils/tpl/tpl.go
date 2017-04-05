@@ -34,6 +34,7 @@ func init()  {
 func BuildImg(img models.Image, appName string) {
 
 	dir := GetExecutableDir()
+	beego.Debug(dir)
 
 	buildFile := dir + "/buildgo.sh"
 	if img.Lang == "Go" {
