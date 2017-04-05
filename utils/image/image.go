@@ -70,7 +70,6 @@ func BuildImage(user, name, tag, giturl, lang string) (imgAddr string) {
 		//copy dockerfile template
 		dir.CopyDir(curPwd+`/template/go`, repoDir)
 		os.Chdir(repoDir)
-		//go build
 		//docker build image
 	}
 
@@ -80,24 +79,6 @@ func BuildImage(user, name, tag, giturl, lang string) (imgAddr string) {
 	if err != nil {
 		panic(err)
 	}
-
-	/*
-	//get current directory
-	curPwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	fmt.Println(curPwd)
-	tar := new(archivex.TarFile)
-	desDir := curPwd + "/build/" + name
-	souDir := curPwd + "/" + name
-	tar.Create(desDir)
-	tar.AddAll(souDir, false)
-	tar.Close()
-	dockerBuildContext, err := os.Open(desDir + ".tar")
-	defer dockerBuildContext.Close()
-	*/
 
 	tar := new(archivex.TarFile)
 	tar.Create("/Users/luocheng/build/final/archieve")
@@ -128,10 +109,6 @@ func BuildImage(user, name, tag, giturl, lang string) (imgAddr string) {
 
 	imgAddr = tags
 	return
-}
-
-func MyBuildImage(user, name, tag string) {
-	tpl.GenerateShellFile(user, name, tag)
 }
 
 

@@ -18,10 +18,10 @@ type Repository struct {
 	Private     bool   `json:"private"`
 }
 
-var gogsUrl string
+var gGogsUrl string
 
 func init()  {
-	gogsUrl = beego.AppConfig.String("gogsurl")
+	gGogsUrl = beego.AppConfig.String("gogsurl")
 }
 
 func CreateRepo(user, pwd, appname, desc string) (giturl string) {
@@ -29,7 +29,7 @@ func CreateRepo(user, pwd, appname, desc string) (giturl string) {
 	r.Name = appname
 	r.Description = desc
 	r.Private = false
-	gogsapi := `http://127.0.0.1:3000/api/v1/user/repos`
+	gogsapi := gGogsUrl + `api/v1/user/repos`
 	bytes, merr := json.Marshal(r)
 	if merr != nil {
 		log.Println("err")
@@ -50,7 +50,7 @@ func CreateRepo(user, pwd, appname, desc string) (giturl string) {
 }
 
 func DeleteRepo(user, pwd, appname string) {
-	delrepo := `http://127.0.0.1/api/v1/repos/` + user + `/` + appname
+	delrepo := gGogsUrl + `api/v1/repos/` + user + `/` + appname
 	resBody, err := commons.MyTestHttpRequest("DELETE", delrepo, nil, user, pwd)
 	if err != nil {
 		log.Println("delete repos failed.")

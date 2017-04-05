@@ -64,3 +64,13 @@ func IsNameUsed(user string, name string) bool {
 	}
 	return true
 }
+
+//update app
+func UpdateApp(app *App) error {
+	o := db.GetOrmer()
+	_, err := o.Update(app, "description", "createdTime", "lang", "services")
+	if err != nil {
+		return err
+	}
+	return nil
+}

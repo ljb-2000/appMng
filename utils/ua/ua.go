@@ -9,17 +9,14 @@ import (
 	"github.com/jmoiron/jsonq"
 )
 
-var uaUrl string
+var gUaUrl string
 
 func init()  {
-	uaUrl = beego.AppConfig.String("uaurl")
+	gUaUrl = beego.AppConfig.String("uaurl")
 }
 
 func GetUserNamePwd(user string) (name, pwd string) {
-
-	//uaapi := `http://223.202.32.60:8072/cp-ua/v1/user/` + user
-
-	uaapi := `http://172.16.5.240:8072/cp-ua/v1/user/` + user
+	uaapi := gUaUrl + `cp-ua/v1/user/` + user
 	var defuser, defpwd string
 	resBody, err := commons.MyTestHttpRequest("GET", uaapi, nil, defuser, defpwd)
 
