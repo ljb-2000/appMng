@@ -116,6 +116,7 @@ func (this *AppController) DeleteApp() {
 // @router /:appId [get]
 func (this *AppController) GetAnApp() {
 	appId := this.Ctx.Input.Param(":appId")
+	userId := this.Ctx.Input.Header("UserName")
 	log.Println(appId)
 	app, err := models.GetaApp(appId)
 	if err != nil {
@@ -123,10 +124,47 @@ func (this *AppController) GetAnApp() {
 		this.CustomAbort(http.StatusInternalServerError, "获取应用详情失败")
 	}
 
+	k8s.GetAnAppStatus(userId, app)
+
 	jsonObj := gabs.New()
 	jsonObj.Set("0", "code")
 	jsonObj.Set("OK", "msg")
 	jsonObj.Set(app, "data")
+
+	this.Ctx.Output.Header("Content-Type", "application/json")
+	this.Ctx.Output.Body([]byte(jsonObj.String()))
+}
+
+// @Title Modify An App
+// @Description modify an app
+// @router /:appId [put]
+func (this *AppController) ModifyAnApp() {
+	appId := this.Ctx.Input.Param(":appId")
+
+	var newApp models.App
+	json.Unmarshal(this.Ctx.Input.RequestBody, &newApp)
+
+	oldApp, err := models.GetaApp(appId)
+	if err != nil {
+		logs.Error("获取应用详情失败 %v", err)
+		this.CustomAbort(http.StatusInternalServerError, "获取应用详情失败")
+	}
+
+	t := time.Now()
+	oldApp.CreatedTime = t.Format("2006-01-02 15:04:05")
+	oldApp.Description = newApp.Description
+	oldApp.Lang = newApp.Lang
+	oldApp.Services = newApp.Services
+
+	errUpd := models.UpdateApp(oldApp)
+	if errUpd != nil {
+		logs.Error("修改应用失败%v", errUpd)
+		this.CustomAbort(http.StatusInternalServerError, "修改应用失败")
+	}
+
+	jsonObj := gabs.New()
+	jsonObj.Set("0", "code")
+	jsonObj.Set("OK", "msg")
 
 	this.Ctx.Output.Header("Content-Type", "application/json")
 	this.Ctx.Output.Body([]byte(jsonObj.String()))
