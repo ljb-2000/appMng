@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"log"
 	"github.com/Jeffail/gabs"
-	//"appMng/utils/image"
 	"github.com/satori/go.uuid"
 	"appMng/models"
 	"time"
 	"appMng/utils/tpl"
+	"github.com/astaxie/beego/logs"
+	"net/http"
 )
 
 type ImageController struct {
@@ -27,18 +28,15 @@ func (this *ImageController) CreateImage() {
 	ob.Id = uuid.NewV4().String()
 	log.Println(ob)
 
-	if IsImageNameTagUsed(ob) {
-
+	app, aerr := models.GetaApp(ob.AppId)
+	if aerr != nil {
+		logs.Error("获取应用失败 %v", aerr)
+		this.CustomAbort(http.StatusInternalServerError, "获取应用失败")
 	}
 
-	/*
-	imgAddr := image.BuildImage(ob.User, ob.Name, ob.Tag, ob.Git, ob.Lang)
-	image.PushImageBack(imgAddr)
-	*/
+	go tpl.GenerateShellFile(ob, app.Name)
 
-	go tpl.GenerateShellFile(ob)
-
-	imgAddr := "registry.time-track.cn:8443/" + ob.User + "/" + ob.Name + ":" + ob.Tag
+	imgAddr := "registry.time-track.cn:8052/" + ob.User + "/" + ob.Name + ":" + ob.Tag
 	ob.Img = imgAddr
 
 	t := time.Now()
@@ -86,21 +84,17 @@ func (this *ImageController) DeleteImage() {
 	imageId := this.Ctx.Input.Param(":imageId")
 	log.Println(imageId)
 
-	/*
-	imgs := []models.Image{}
-	imgs, _ = models.GetImages(appId)
-
+	err := models.DeleteImage(imageId)
+	if err != nil {
+		logs.Error("删除镜像失败 %v", err)
+		this.CustomAbort(http.StatusInternalServerError, "删除镜像失败")
+	}
 	jsonObj := gabs.New()
 	jsonObj.Set("0", "code")
 	jsonObj.Set("OK", "msg")
-	jsonObj.Set(imgs, "imgs")
 
 	this.Ctx.Output.Header("Content-Type", "application/json")
 	this.Ctx.Output.Body([]byte(jsonObj.String()))
-	*/
-
-	this.Data["json"] = map[string]interface{}{"delete": imageId}
-	this.ServeJSON()
 }
 
 func (this *ImageController) GetAppImages() {
